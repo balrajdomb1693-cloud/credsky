@@ -51,12 +51,33 @@ Then open http://localhost:3000
 
 ### Deploy to Vercel
 
-1. Push this folder to the `credsky` GitHub repository.
-2. Import the repo in Vercel (framework preset: **Other** — no build step needed).
-3. Add the environment variable `WEATHER_API_KEY` (Project Settings → Environment Variables).
-4. Deploy. The proxy is available at `/api/weather` in production.
+This repository deploys to the Vercel project **`credsky`**:
 
-> The API key is read from `process.env.WEATHER_API_KEY` only — it is never bundled into client-side code.
+- **Production URL:** https://credsky-three.vercel.app
+- The WeatherAPI key is configured server-side as `WEATHER_API_KEY`
+  (Project Settings → Environment Variables) and is never exposed to the browser.
+- The proxy is available at `/api/weather` in production.
+
+### CI/CD (deploy on push)
+
+Two supported ways to make every push to `main` deploy automatically:
+
+1. **Native Vercel Git integration (recommended).** One-time, interactive:
+   - In Vercel: Account Settings → **Login Connections** → connect GitHub.
+   - Then Project `credsky` → Settings → Git → connect `balrajdomb1693-cloud/credsky`.
+   After this, pushes to `main` deploy automatically and `.github/workflows/deploy.yml` can be deleted.
+
+2. **GitHub Actions.** Push `.github/workflows/deploy.yml` (present in the working tree;
+   note: pushing workflow files requires a GitHub token with the `workflow` scope) and add a
+   repository secret `VERCEL_TOKEN` under Settings → Secrets and variables → Actions.
+   The workflow deploys to production on every push to `main` and skips gracefully
+   while the secret is not set.
+
+Manual production deploy from a machine with Vercel CLI auth:
+
+```
+npx vercel deploy --prod --yes --token <VERCEL_TOKEN>
+```
 
 ## Analytics events (PRD §11)
 
