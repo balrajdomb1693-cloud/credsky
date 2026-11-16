@@ -1,0 +1,8 @@
+# Secrets — never commit
+.env
+.env.local
+.vercel
+
+# Dependencies / build output
+node_modules/
+dist/
